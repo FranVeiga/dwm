@@ -1,0 +1,31 @@
+#! /bin/bash
+
+picom &
+
+ while true; do
+	 while true; do
+        xsetroot -name "$(pacman -Qu | grep -Fcv "[ignored]" | sed "s/^/📦/;s/^📦0$//g" && \
+                          printf '  ' && \
+                          printf "%s: %s\n" "🖥" "$(df -h "/" | awk ' /[0-9]/ {print $3 "/" $2}')" && \
+                          printf '  ' && \
+                          printf "%s: %s\n" "🏠" "$(df -h "/home" | awk ' /[0-9]/ {print $3 "/" $2}')" && \
+                          printf '  ' && \
+                          printf '⏱️' && top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
+                          printf '  ' && \
+                          free --mebi | sed -n '2{p;q}' | awk '{printf ("🧠%2.2fGiB/%2.2fGiB\n", ( $3 / 1024 ), ($2 / 1024))}' && \
+                          printf '  ' && \
+                          printf "🔋" && acpi | egrep --only-matching '.?..%' && \
+                          printf '  ' && \
+                          date +'📅%d/%m/%y - %k:%M')"
+		sleep 5s
+	done &
+    
+    while true; do
+        random_file="/home/user/pics/wallpapers/$(ls /home/user/pics/wallpapers | shuf - | head -1)"
+        nitrogen --set-zoom-fill $random_file & 
+        sleep 20m
+    done &
+
+    dwm >/dev/null 2>&1
+
+done
