@@ -99,7 +99,7 @@ static const char *lowbrowsercmd[]  = { "qutebrowser", NULL };
 static const char *alsamixercmd[] = {"st", "-e", "alsamixer" };
 static const char *vifmcmd[] = {"st", "-e", "vifm" };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
-static const char *mocpcmd[] = {"st", "-e", "mocp"};
+static const char *mocpcmd[] = {"st", "-e", "mocp", "-T", "nightly_theme"};
 static const char *mocpskip[] = {"mocp", "-f"};
 static const char *mocppause[] = {"mocp", "-G", "&"};
 

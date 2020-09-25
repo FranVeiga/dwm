@@ -1,13 +1,13 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 8;       /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
+static const char *fonts[]          = { "NotoSansMono-Regular:pixelsize=12:antialias=true:autohint=true", "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -17,8 +17,9 @@ static const char col_cyan[]        = "#005577";
 static const char col_purple[]        = "#330057";
 static const char col_lilac[]        = "#631b96";
 static const char col_white[]        = "#ffffff";
-static const unsigned int baralpha = 0.9;
-static const unsigned int borderalpha = 0.5;
+static const unsigned int baralpha = 0xc8;
+static const unsigned int baralpha2 = 0x64;
+static const unsigned int borderalpha = 1;
 
 
 static const char *colors[][3]      = {
@@ -34,14 +35,14 @@ static const char *colors[][3]      = {
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
-	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
-	[SchemeHid]  = { OPAQUE, baralpha, borderalpha  },
+	[SchemeNorm] = { OPAQUE, baralpha2, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha2, borderalpha },
+	[SchemeHid]  = { OPAQUE, baralpha2, borderalpha  },
 	[SchemeStatus]  = { OPAQUE, baralpha, borderalpha  }, 
-	[SchemeTagsSel]  = { OPAQUE, baralpha, borderalpha  }, 
-    [SchemeTagsNorm]  = { OPAQUE, baralpha, borderalpha  }, 
-    [SchemeInfoSel]  = { OPAQUE, baralpha, borderalpha  }, 
-    [SchemeInfoNorm]  = { OPAQUE, baralpha, borderalpha  }, 
+	[SchemeTagsSel]  = { OPAQUE, baralpha2, borderalpha  }, 
+    [SchemeTagsNorm]  = { OPAQUE, baralpha2, borderalpha  }, 
+    [SchemeInfoSel]  = { OPAQUE, baralpha2, borderalpha  }, 
+    [SchemeInfoNorm]  = { OPAQUE, baralpha2, borderalpha  }, 
 };
 
 /* tagging */
@@ -98,6 +99,9 @@ static const char *lowbrowsercmd[]  = { "qutebrowser", NULL };
 static const char *alsamixercmd[] = {"st", "-e", "alsamixer" };
 static const char *vifmcmd[] = {"st", "-e", "vifm" };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
+static const char *mocpcmd[] = {"st", "-e", "mocp", "-T", "nightly_theme"};
+static const char *mocpskip[] = {"mocp", "-f"};
+static const char *mocppause[] = {"mocp", "-G", "&"};
 
 /* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
 static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
@@ -111,6 +115,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_e,      spawn,          {.v = vifmcmd } },
 	{ MODKEY,                       XK_a,      spawn,          {.v = alsamixercmd } },
+ 	{ MODKEY,                       XK_space,  spawn,          {.v = mocpcmd } },
+	{ MODKEY|ShiftMask,             XK_space,  spawn,          {.v = mocpskip } },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = mocppause } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -128,12 +135,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_e,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_r,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY|ShiftMask,             XK_r,      setlayout,      {.v = &layouts[5]} },
- 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_m,      fullscreen,     {0} },
 	{ MODKEY|ShiftMask, 			XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, cyclelayout,    {.i = +1 } },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ControlMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_s,      togglesticky,   {0} },
 	{ MODKEY|ShiftMask,             XK_t,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
