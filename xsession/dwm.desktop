@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Dwm
+Comment=Dwm Session
+Exec=/usr/share/xsessions/dwmstart
+Type=Application
+Keywords=wm;tiling
