@@ -102,6 +102,9 @@ static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *mocpcmd[] = {"st", "-e", "mocp", "-T", "nightly_theme"};
 static const char *mocpskip[] = {"mocp", "-f"};
 static const char *mocppause[] = {"mocp", "-G", "&"};
+static const char *mocpprev[] = {"mocp", "-r", "&"};
+static const char *lessbright[] = {"xbacklight", "-dec", "10'"};
+static const char *morebright[] = {"xbacklight", "-inc", "10"};
 
 /* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
 static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
@@ -118,6 +121,9 @@ static Key keys[] = {
  	{ MODKEY,                       XK_space,  spawn,          {.v = mocpcmd } },
 	{ MODKEY|ShiftMask,             XK_space,  spawn,          {.v = mocpskip } },
 	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = mocppause } },
+	{ MODKEY|ControlMask,           XK_p,      spawn,          {.v = mocpprev } },
+	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = lessbright } },
+	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = morebright } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -138,7 +144,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_m,      fullscreen,     {0} },
 	{ MODKEY|ShiftMask, 			XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, cyclelayout,    {.i = +1 } },
-	{ MODKEY|ControlMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ControlMask,           XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_s,      togglesticky,   {0} },
 	{ MODKEY|ShiftMask,             XK_t,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
