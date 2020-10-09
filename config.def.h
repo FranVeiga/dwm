@@ -107,6 +107,10 @@ static const char *mocppause[] = {"mocp", "-G", "&"};
 static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
 static char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
+/* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
+static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
+static char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
