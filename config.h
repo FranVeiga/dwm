@@ -94,10 +94,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *browsercmd[]  = { "firefox", NULL };
+static const char *browsercmd[]  = { "brave", NULL };
 static const char *lowbrowsercmd[]  = { "qutebrowser", NULL };
 static const char *alsamixercmd[] = {"st", "-e", "alsamixer" };
 static const char *vifmcmd[] = {"st", "-e", "vifm" };
+static const char *htopcmd[] = {"st", "-e", "htop" };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *mocpcmd[] = {"st", "-e", "mocp", "-T", "nightly_theme"};
 static const char *mocpskip[] = {"mocp", "-f"};
@@ -105,6 +106,9 @@ static const char *mocppause[] = {"mocp", "-G", "&"};
 static const char *mocpprev[] = {"mocp", "-r", "&"};
 static const char *lessbright[] = {"xbacklight", "-dec", "10'"};
 static const char *morebright[] = {"xbacklight", "-inc", "10"};
+static const char *volumeup[] = {"amixer", "set", "Master", "5%+", "&"};
+static const char *volumedown[] = {"amixer", "set", "Master", "5%-", "&"};
+static const char *volumemute[] = {"amixer", "set", "Master", "toggle", "&"};
 
 /* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
 static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
@@ -120,7 +124,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_a,      spawn,          {.v = alsamixercmd } },
  	{ MODKEY,                       XK_space,  spawn,          {.v = mocpcmd } },
 	{ MODKEY|ShiftMask,             XK_space,  spawn,          {.v = mocpskip } },
-	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = mocppause } },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = htopcmd } },
 	{ MODKEY|ControlMask,           XK_p,      spawn,          {.v = mocpprev } },
 	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = lessbright } },
 	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = morebright } },
@@ -149,10 +153,23 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY,                       XK_plus,   setborderpx,    {.i = +1 } },
-	{ MODKEY,                       XK_minus,  setborderpx,    {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  focusmon,       {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period, focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_plus,   setborderpx,    {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_minus,  setborderpx,    {.i = -1 } },
+	{ MODKEY,                       XK_period, spawn,          {.v = volumeup } },
+	{ MODKEY,                       XK_comma,  spawn,          {.v = volumedown } },
+
+
+	{ 0,                       XF86XK_AudioRaiseVolume,  spawn,          {.v = volumeup } },
+	{ 0,                       XF86XK_AudioLowerVolume,  spawn,          {.v = volumedown } },
+	{ 0,                       XF86XK_AudioMute,         spawn,          {.v = volumemute } },
+	{ 0,                       XF86XK_AudioNext,         spawn,          {.v = mocpskip } },
+	{ 0,                       XF86XK_AudioPlay,         spawn,          {.v = mocppause } },
+	{ 0,                       XF86XK_AudioPrev,         spawn,          {.v = mocpprev } },
+	{ 0,                       XF86XK_MonBrightnessUp,   spawn,          {.v = morebright } },
+	{ 0,                       XF86XK_MonBrightnessDown, spawn,          {.v = lessbright } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
