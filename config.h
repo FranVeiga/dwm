@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 5;       /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -17,9 +17,9 @@ static const char col_cyan[]        = "#005577";
 static const char col_purple[]        = "#330057";
 static const char col_lilac[]        = "#631b96";
 static const char col_white[]        = "#ffffff";
-static const unsigned int baralpha = 0xc8;
-static const unsigned int baralpha2 = 0x64;
-static const unsigned int borderalpha = 1;
+static const unsigned int baralpha = 0xff;
+static const unsigned int baralpha2 = 0xe6;
+static const unsigned int borderalpha = 0xff;
 
 
 static const char *colors[][3]      = {
@@ -36,12 +36,12 @@ static const char *colors[][3]      = {
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
 	[SchemeNorm] = { OPAQUE, baralpha2, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha2, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 	[SchemeHid]  = { OPAQUE, baralpha2, borderalpha  },
-	[SchemeStatus]  = { OPAQUE, baralpha, borderalpha  }, 
-	[SchemeTagsSel]  = { OPAQUE, baralpha2, borderalpha  }, 
+	[SchemeStatus]  = { OPAQUE, baralpha2, borderalpha  }, 
+	[SchemeTagsSel]  = { OPAQUE, baralpha, borderalpha  }, 
     [SchemeTagsNorm]  = { OPAQUE, baralpha2, borderalpha  }, 
-    [SchemeInfoSel]  = { OPAQUE, baralpha2, borderalpha  }, 
+    [SchemeInfoSel]  = { OPAQUE, baralpha, borderalpha  }, 
     [SchemeInfoNorm]  = { OPAQUE, baralpha2, borderalpha  }, 
 };
 
@@ -80,7 +80,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -94,16 +94,23 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *browsercmd[]  = { "brave", NULL };
+static const char *browsercmd[]  = { "vivaldi-snapshot", NULL };
 static const char *lowbrowsercmd[]  = { "qutebrowser", NULL };
+static const char *edexuicmd[]  = { "edex-ui", NULL };
+static const char *screenshotcmd[]  = { "flameshot", "gui" , NULL};
 static const char *alsamixercmd[] = {"st", "-e", "alsamixer" };
-static const char *vifmcmd[] = {"st", "-e", "vifm" };
+static const char *pavucontrolcmd[] = {"pavucontrol", NULL };
+static const char *filecmd[] = { "pcmanfm", NULL };
+static const char *bluetoothcmd[] = { "blueman-manager", NULL };
 static const char *htopcmd[] = {"st", "-e", "htop" };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *mocpcmd[] = {"st", "-e", "mocp", "-T", "nightly_theme"};
 static const char *mocpskip[] = {"mocp", "-f"};
 static const char *mocppause[] = {"mocp", "-G", "&"};
 static const char *mocpprev[] = {"mocp", "-r", "&"};
+static const char *pausecmd[] = {"playerctl", "play-pause", NULL };
+static const char *previouscmd[] = {"playerctl", "previous", NULL };
+static const char *nextcmd[] = {"mocp", "next", NULL };
 static const char *lessbright[] = {"xbacklight", "-dec", "10'"};
 static const char *morebright[] = {"xbacklight", "-inc", "10"};
 static const char *volumeup[] = {"amixer", "set", "Master", "5%+", "&"};
@@ -111,7 +118,7 @@ static const char *volumedown[] = {"amixer", "set", "Master", "5%-", "&"};
 static const char *volumemute[] = {"amixer", "set", "Master", "toggle", "&"};
 
 /* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
-static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
+static char *statuscmds[] = { "st -e htop" };
 static char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
 static Key keys[] = {
@@ -120,15 +127,20 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,      spawn,          {.v = browsercmd } },
 	{ MODKEY|ShiftMask,             XK_u,      spawn,          {.v = lowbrowsercmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_e,      spawn,          {.v = vifmcmd } },
-	{ MODKEY,                       XK_a,      spawn,          {.v = alsamixercmd } },
+	{ MODKEY|ControlMask,           XK_Return, spawn,          {.v = edexuicmd } },
+	{ MODKEY|ShiftMask,             XK_e,      spawn,          {.v = filecmd } },
+	{ MODKEY,                       XK_a,      spawn,          {.v = pavucontrolcmd } },
+	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = alsamixercmd } },
+	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = bluetoothcmd } },
  	{ MODKEY,                       XK_space,  spawn,          {.v = mocpcmd } },
 	{ MODKEY|ShiftMask,             XK_space,  spawn,          {.v = mocpskip } },
-	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = htopcmd } },
 	{ MODKEY|ControlMask,           XK_p,      spawn,          {.v = mocpprev } },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = htopcmd } },
 	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = lessbright } },
 	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = morebright } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      rotatestack,    {.i = -1 } },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -164,11 +176,16 @@ static Key keys[] = {
 	{ 0,                       XF86XK_AudioRaiseVolume,  spawn,          {.v = volumeup } },
 	{ 0,                       XF86XK_AudioLowerVolume,  spawn,          {.v = volumedown } },
 	{ 0,                       XF86XK_AudioMute,         spawn,          {.v = volumemute } },
-	{ 0,                       XF86XK_AudioNext,         spawn,          {.v = mocpskip } },
-	{ 0,                       XF86XK_AudioPlay,         spawn,          {.v = mocppause } },
-	{ 0,                       XF86XK_AudioPrev,         spawn,          {.v = mocpprev } },
+	{ MODKEY,                  XF86XK_AudioNext,         spawn,          {.v = mocpskip } },
+	{ MODKEY,                  XF86XK_AudioPlay,         spawn,          {.v = mocppause } },
+	{ MODKEY,                  XF86XK_AudioPrev,         spawn,          {.v = mocpprev } },
+	{ 0,                       XF86XK_AudioNext,         spawn,          {.v = nextcmd } },
+	{ 0,                       XF86XK_AudioPlay,         spawn,          {.v = pausecmd } },
+	{ 0,                       XF86XK_AudioPrev,         spawn,          {.v = previouscmd } },
 	{ 0,                       XF86XK_MonBrightnessUp,   spawn,          {.v = morebright } },
 	{ 0,                       XF86XK_MonBrightnessDown, spawn,          {.v = lessbright } },
+	{ 0,                       XK_Print, spawn,          {.v = screenshotcmd } },
+
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -180,6 +197,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ControlMask,			XK_r,      quit,           {1} }, 
 };
 
 /* button definitions */
