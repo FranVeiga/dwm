@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 5;       /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -110,12 +110,12 @@ static const char *mocppause[] = {"mocp", "-G", "&"};
 static const char *mocpprev[] = {"mocp", "-r", "&"};
 static const char *pausecmd[] = {"playerctl", "play-pause", NULL };
 static const char *previouscmd[] = {"playerctl", "previous", NULL };
-static const char *nextcmd[] = {"mocp", "next", NULL };
-static const char *lessbright[] = {"xbacklight", "-dec", "10'"};
-static const char *morebright[] = {"xbacklight", "-inc", "10"};
-static const char *volumeup[] = {"amixer", "set", "Master", "5%+", "&"};
-static const char *volumedown[] = {"amixer", "set", "Master", "5%-", "&"};
-static const char *volumemute[] = {"amixer", "set", "Master", "toggle", "&"};
+static const char *nextcmd[] = {"playerctl", "next", NULL };
+static const char *lessbright[] = {"sh", "-c", "xbacklight -dec 10 && pkill -RTMIN+11 dwmblocks", NULL};
+static const char *morebright[] = {"sh", "-c", "xbacklight -inc 10 && pkill -RTMIN+11 dwmblocks", NULL};
+static const char *volumeup[] = {"sh", "-c", "amixer set Master 5%+ && pkill -RTMIN+12 dwmblocks", NULL};
+static const char *volumedown[] = {"sh", "-c", "amixer set Master 5%- && pkill -RTMIN+12 dwmblocks", NULL};
+static const char *volumemute[] = {"sh", "-c", "amixer set Master toggle && pkill -RTMIN+12 dwmblocks", NULL};
 
 /* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
 static char *statuscmds[] = { "st -e htop" };
